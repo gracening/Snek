@@ -65,7 +65,6 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         $log.debug("created snek");
         dirInput = RIGHT;
 
-        //$log.debug($scope.board[1][2] === false);
         update();
     };
 
@@ -102,9 +101,10 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         $scope.board[tail.y][tail.x] = false;
         
         snake.bod.unshift(head);
-        snake.bod[head.y][head.x] = true;
+        $scope.board[head.y][head.x] = true;
         
         snake.dir = dirInput;
+        $log.debug("updated");
         $timeout(update, 500);
     }
 
