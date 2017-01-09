@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snek</title>
+        <script src="/lib/angular.min.js"></script>
+        <script src="/lib/jquery.min.js"></script>
+        <script src="/app/todo.js"></script>
+        <link href="/main.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body ng-app="snek" ng-controller="SnekCtrl">
+        <div class="row" ng-repeat="col in board">
+            <div class="column" ng-style="{'background-color':($parent.$index, $index)}" ng-repeat="row in column track by $index"></div>
+        </div>
+        
+        <script>
+            function setUp() {
+                $scope.board=[];
+                for (var i = 0; i < BOARD_SIZE; i++) {
+                    $scope.board[i] = [];
+                    for (var j = 0; j < BOARD_SIZE; j++) {
+                        $scope.board[[i][j] = false;
+                    }
+                }
+            }
+
+            $scope.setStyling = function(col, row) {
+
+            };
+        </script>
+    </body>
+</html>
