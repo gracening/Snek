@@ -10,7 +10,7 @@
 
     <body ng-app="snek" ng-controller="SnekCtrl" ng-keyup="key($event)">
         <div class="row" ng-repeat="col in board">
-            <div class="column" ng-style="{'background-color': colour($parent.$index, $index)}" ng-repeat="row in column track by $index"></div>
+            <div class="column" ng-style="{ 'background-color' : colour($parent.$index, $index)}" ng-repeat="row in col track by $index"></div>
         </div>
         <button id="start" ng-click="start()">Start</button>
     
