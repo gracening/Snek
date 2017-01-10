@@ -2,7 +2,7 @@ var app = angular.module("snek", []);
 
 app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $timeout, $log) {
     $log.debug("Initializing Controller");
-    var BOARD_SIZE = 35;
+    var BOARD_SIZE = 30;
     $scope.score = 0;
 
     var UP = 38;
@@ -55,7 +55,7 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
 
     function createSnek() {
         for (var i = 0; i < 6; i++) {
-            snake.bod.push({x:10+i, y:10});
+            snake.bod.push({x:10+i, y:15});
         }
     }
 
@@ -89,7 +89,7 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
 
         if (hitBoard(head) || hitSelf(head)) {
             $log.debug("rip");
-            alert("Game Over");
+            alert("Game Over! Score: " + $scope.score);
             return;
         }
         else if (hitDot(head)) {
@@ -147,6 +147,7 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         $log.debug("started game");
         game_over = false;
         setUp();
+        $scope.score = 0;
         snake = {
             dir: RIGHT, bod: []
         };
