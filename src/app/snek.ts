@@ -33,12 +33,8 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
     }
 
     $scope.colour = function(col, row) {
-        if (game_over) {
-            //do something
-        }
-        else if (dot.x == row && dot.y == col) {
-            //let's make it black for now
-            return '#FFFFFF';
+        if (dot.x == row && dot.y == col) {
+            return '#ff4d4d';
         }
         else if (snake.bod[0].x == row && snake.bod[0].y == col) {
             //blue snek
@@ -54,29 +50,24 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         game_over = true; 
     }
 
-    $scope.start = function() {
-        $log.debug("started game");
-        game_over = false;
-        setUp();
-        snake = {
-            dir: RIGHT, bod: []
-        };
-
-        createSnek();
-        $log.debug("created snek");
-        dirInput = RIGHT;
-
-        update();
-    };
-
     function createSnek() {
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 6; i++) {
             snake.bod.push({x:10+i, y:10});
         }
     }
 
+    function createDot() {
+        do {
+            var x = Math.floor((Math.random())*BOARD_SIZE);
+            var y = Math.floor((Math.random())*BOARD_SIZE);
+        }
+        while ($scope.board[x][y] === true);
+        $log.debug("x " + x + " y " + y);
+        dot.x = x;
+        dot.y = y;
+    }
+
     $scope.key = function($event) {
-        console.log($event.keyCode);
         if ($event.keyCode == UP) {
             dirInput = UP;
         }
@@ -100,6 +91,12 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
             alert("Game Over");
             return;
         }
+        else if (hitDot(head)) {
+            createDot();
+            var tindex = snake.bod.length-1;
+            var newTail = angular.copy(snake.bod[tindex]);
+            snake.bod.push(newTail);
+        }
 
         var tail = snake.bod.pop();
         $scope.board[tail.y][tail.x] = false;
@@ -109,7 +106,7 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         
         snake.dir = dirInput;
         $log.debug("updated");
-        $timeout(update, 150);
+        $timeout(update, 100);
     }
 
     function updateHead() {
@@ -139,5 +136,24 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
     function hitSelf(head) {
         return $scope.board[head.y][head.x] === true;
     }
+
+    function hitDot(head) {
+        return head.x === dot.x && head.y === dot.y;
+    }
+
+    $scope.start = function() {
+        $log.debug("started game");
+        game_over = false;
+        setUp();
+        snake = {
+            dir: RIGHT, bod: []
+        };
+
+        createSnek();
+        createDot();
+        dirInput = RIGHT;
+
+        update();
+    };
 
 }]);
