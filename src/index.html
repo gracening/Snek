@@ -8,7 +8,8 @@
         <link href="/main.css" rel="stylesheet" type="text/css">
     </head>
 
-    <body ng-app="snek" ng-controller="SnekCtrl" ng-keyup="key($event)">
+    <body ng-app="snek" ng-controller="SnekCtrl" ng-keydown="key($event)">
+        <h2>Score: {{score}}</h2> 
         <div class="row" ng-repeat="col in board">
             <div class="column" ng-style="{ 'background-color' : colour($parent.$index, $index)}" ng-repeat="row in col track by $index"></div>
         </div>

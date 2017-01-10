@@ -3,6 +3,7 @@ var app = angular.module("snek", []);
 app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $timeout, $log) {
     $log.debug("Initializing Controller");
     var BOARD_SIZE = 35;
+    $scope.score = 0;
 
     var UP = 38;
     var RIGHT = 39;
@@ -31,6 +32,8 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
             }
         }
     }
+
+    setUp();
 
     $scope.colour = function(col, row) {
         if (dot.x == row && dot.y == col) {
@@ -62,22 +65,21 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
             var y = Math.floor((Math.random())*BOARD_SIZE);
         }
         while ($scope.board[x][y] === true);
-        $log.debug("x " + x + " y " + y);
         dot.x = x;
         dot.y = y;
     }
 
     $scope.key = function($event) {
-        if ($event.keyCode == UP) {
+        if ($event.keyCode == UP && snake.dir != DOWN) {
             dirInput = UP;
         }
-        else if ($event.keyCode == RIGHT) {
+        else if ($event.keyCode == RIGHT && snake.dir != LEFT) {
             dirInput = RIGHT;
         }
-        else if ($event.keyCode == DOWN) {
+        else if ($event.keyCode == DOWN && snake.dir != UP) {
             dirInput = DOWN;
         }
-        else if ($event.keyCode == LEFT) {
+        else if ($event.keyCode == LEFT && snake.dir != RIGHT) {
             dirInput = LEFT;
         }
     }
@@ -86,7 +88,6 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         var head = updateHead();
 
         if (hitBoard(head) || hitSelf(head)) {
-            //game over
             $log.debug("rip");
             alert("Game Over");
             return;
@@ -96,6 +97,7 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
             var tindex = snake.bod.length-1;
             var newTail = angular.copy(snake.bod[tindex]);
             snake.bod.push(newTail);
+            $scope.score++;
         }
 
         var tail = snake.bod.pop();
@@ -105,14 +107,14 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
         $scope.board[head.y][head.x] = true;
         
         snake.dir = dirInput;
-        $log.debug("updated");
+        //$log.debug("updated");
         $timeout(update, 100);
     }
 
     function updateHead() {
         var head = angular.copy(snake.bod[0]);
 
-        $log.debug(snake.bod[0]);
+        //$log.debug(snake.bod[0]);
         if (dirInput === UP) {
             head.y -= 1;
         }
