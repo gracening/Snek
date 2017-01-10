@@ -2,7 +2,7 @@ var app = angular.module("snek", []);
 
 app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $timeout, $log) {
     $log.debug("Initializing Controller");
-    var BOARD_SIZE = 20;
+    var BOARD_SIZE = 35;
 
     var UP = 38;
     var RIGHT = 39;
@@ -33,7 +33,6 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
     }
 
     $scope.colour = function(col, row) {
-        $log.debug("do you even run");
         if (game_over) {
             //do something
         }
@@ -42,7 +41,6 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
             return '#FFFFFF';
         }
         else if (snake.bod[0].x == row && snake.bod[0].y == col) {
-            $log.debug("snek here");
             //blue snek
             return '#007399';
         }
@@ -96,9 +94,11 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
     function update() {
         var head = updateHead();
 
-        if (hitSelf(head) || hitBoard(head)) {
+        if (hitBoard(head) || hitSelf(head)) {
             //game over
             $log.debug("rip");
+            alert("Game Over");
+            return;
         }
 
         var tail = snake.bod.pop();
