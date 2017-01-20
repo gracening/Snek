@@ -64,7 +64,7 @@ app.controller("SnekCtrl", ["$scope", "$timeout", "$log", function ($scope, $tim
             var x = Math.floor((Math.random())*BOARD_SIZE);
             var y = Math.floor((Math.random())*BOARD_SIZE);
         }
-        while ($scope.board[x][y] === true);
+        while ($scope.board[y][x] === true);
         dot.x = x;
         dot.y = y;
     }
